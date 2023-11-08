@@ -7,8 +7,8 @@ import { useProducts } from "../hooks/useProduct";
 import useFavorites from "../hooks/useFavorite";
 import Filters from "./Filters";
 
-const ItemListContainer = ({ favorites }) => {
-  const { filteredProducts, removeFromCart, addToCart } = useProducts();
+const ItemListContainer = ({ favorites, filters }) => {
+  const { products, removeFromCart, addToCart } = useProducts();
   const { likedProducts, toggleFavorite } = useFavorites();
 
   const renderButton = (product, isProductInCart) => (
@@ -40,7 +40,7 @@ const ItemListContainer = ({ favorites }) => {
         <Card
           heightAndWidthImg={"h-96"}
           styles={"w-96 max-[400px]:w-72 flex-col"}
-          products={favorites ? favorites : filteredProducts}
+          products={favorites || filters ? favorites || filters : products}
           renderButton={renderButton}
           renderLike={renderLike}
         />
@@ -49,6 +49,7 @@ const ItemListContainer = ({ favorites }) => {
   );
 };
 ItemListContainer.propTypes = {
-  favorites: PropTypes.any,
+  favorites: PropTypes.array,
+  filters: PropTypes.array,
 };
 export default ItemListContainer;

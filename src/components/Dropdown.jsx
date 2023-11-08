@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ArrowIcon } from "./Icon";
+import { Link } from "react-router-dom";
 
 const Dropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,9 +46,15 @@ const Dropdown = () => {
         {dropdownItems.map((item) => (
           <li
             key={item.id}
-            className="cursor-pointer hover:bg-[var(--card-background-color)] px-4 py-2 "
+            className="cursor-pointer hover:bg-[var(--card-background-color)] px-4 py-2"
           >
-            {item.text}
+            <Link
+              onClick={handleClick}
+              to={`/category/${item.text}`}
+              state={{ category: item.text }}
+            >
+              {item.text}
+            </Link>
           </li>
         ))}
       </ul>

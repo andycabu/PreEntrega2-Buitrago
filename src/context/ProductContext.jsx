@@ -70,10 +70,11 @@ export const ProductProvider = ({ children }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [cartCount, setCartCount] = useState(0);
 
-  const [products, setProducts] = useState();
+  const [products, setProducts] = useState([]);
   const [filters, setFilters] = useState({
-    title: "",
+    category: "all categories",
     minPrice: 0,
+    title: "",
   });
   const [favorites, setFavorites] = useState(() => {
     const savedFavorites = window.localStorage.getItem("favorites");
@@ -125,9 +126,10 @@ export const ProductProvider = ({ children }) => {
 
   const filterProducts = (products) => {
     return products.filter((product) => {
-      console.log(product);
       return (
         product.price >= filters.minPrice &&
+        (filters.category === "all categories" ||
+          product.category === filters.category) &&
         product.title.toLowerCase().includes(filters.title.toLowerCase())
       );
     });
@@ -139,7 +141,7 @@ export const ProductProvider = ({ children }) => {
   const filteredProductsFav = filterProducts(favorites || []);
 
   useEffect(() => {
-    if (!products) {
+    if (products.length < 1) {
       getProducts();
     }
   }, []);
@@ -166,6 +168,7 @@ export const ProductProvider = ({ children }) => {
   return (
     <ProductContext.Provider
       value={{
+        products,
         filteredProducts,
         filteredProductsFav,
         checkProductInCart,
