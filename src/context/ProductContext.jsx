@@ -72,7 +72,7 @@ export const ProductProvider = ({ children }) => {
 
   const [products, setProducts] = useState();
   const [filters, setFilters] = useState({
-    category: "all categories",
+    title: "",
     minPrice: 0,
   });
   const [favorites, setFavorites] = useState(() => {
@@ -81,6 +81,11 @@ export const ProductProvider = ({ children }) => {
   });
   const updateToLocalStorage = (state) => {
     window.localStorage.setItem("favorites", JSON.stringify(state));
+  };
+  const getProducts = async () => {
+    const res = await fetch(url);
+    const data = await res.json();
+    setProducts(data);
   };
 
   const addToCart = (product) =>
@@ -117,24 +122,22 @@ export const ProductProvider = ({ children }) => {
       return newFavorites;
     });
   };
-  const getProducts = async () => {
-    const res = await fetch(url);
-    const data = await res.json();
-    setProducts(data);
-  };
+
   const filterProducts = (products) => {
     return products.filter((product) => {
+      console.log(product);
       return (
         product.price >= filters.minPrice &&
-        (filters.category === "all categories" ||
-          product.category === filters.category)
+        product.title.toLowerCase().includes(filters.title.toLowerCase())
       );
     });
   };
+
   const checkProductInCart = (product) =>
     cart.some((item) => item.id === product.id);
   const filteredProducts = filterProducts(products || []);
   const filteredProductsFav = filterProducts(favorites || []);
+
   useEffect(() => {
     if (!products) {
       getProducts();

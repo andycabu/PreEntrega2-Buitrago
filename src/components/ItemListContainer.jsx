@@ -1,13 +1,13 @@
-import Button from "../components/Button";
-import Card from "../components/Card";
-import Like from "../components/Like";
+import Button from "./Button";
+import Card from "./Card";
+import Like from "./Like";
 import PropTypes from "prop-types";
-import { AddToCartIcon, RemoveFromCartIcon } from "../components/Icon";
+import { AddToCartIcon, RemoveFromCartIcon } from "./Icon";
 import { useProducts } from "../hooks/useProduct";
 import useFavorites from "../hooks/useFavorite";
-import Filters from "../components/Filters";
+import Filters from "./Filters";
 
-const HomePage = ({ favorites }) => {
+const ItemListContainer = ({ favorites }) => {
   const { filteredProducts, removeFromCart, addToCart } = useProducts();
   const { likedProducts, toggleFavorite } = useFavorites();
 
@@ -48,7 +48,7 @@ const HomePage = ({ favorites }) => {
     </>
   );
 };
-HomePage.propTypes = {
+ItemListContainer.propTypes = {
   favorites: PropTypes.any,
 };
-export default HomePage;
+export default ItemListContainer;
