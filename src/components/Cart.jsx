@@ -1,20 +1,14 @@
-import { AddIcon, ClearCartIcon, SubtractIcon } from "./Icon";
-import { useProducts } from "../hooks/useProduct";
+import { ClearCartIcon } from "./Icon";
 import Button from "./Button";
 import Card from "./Card";
 import { formatPrecio } from "../utilities/utilitys";
 import Aside from "./Aside";
+import ButtonsCart from "./ButtonsCart";
+import { useCart } from "../hooks/useCart";
 
 const Cart = () => {
-  const {
-    cart,
-    removeFromCart,
-    addToCart,
-    subtractToCart,
-    clearCart,
-    totalPrice,
-    cartCount,
-  } = useProducts();
+  const { cart, clearCart, removeFromCart, totalPrice, cartCount } = useCart();
+  console.log(cart);
 
   const { integer, decimals } = formatPrecio(totalPrice);
 
@@ -46,32 +40,10 @@ const Cart = () => {
               products={cart}
               renderButton={(product) => (
                 <div className="flex gap-4 max-[490px]:flex-col">
-                  <div className="flex gap-1">
-                    {product.quantity === 1 ? (
-                      <Button
-                        onClick={() => removeFromCart(product)}
-                        background={"bg-red-500 hover:bg-red-600"}
-                        icon={<ClearCartIcon className={"h-6 w-6 "} />}
-                      />
-                    ) : (
-                      <Button
-                        icon={<SubtractIcon />}
-                        onClick={() => subtractToCart(product)}
-                        background={"bg-red-500 hover:bg-red-600"}
-                      />
-                    )}
-
-                    <div className="bg-[var(--background-color)] rounded  py-2 px-4     select-none">
-                      <small>{product.quantity}</small>
-                    </div>
-                    <Button
-                      icon={<AddIcon />}
-                      onClick={() => addToCart(product)}
-                    />
-                  </div>
+                  <ButtonsCart product={product} />
                   {product.quantity > 1 && (
                     <Button
-                      onClick={() => removeFromCart(product)}
+                      onClick={() => removeFromCart(product.id)}
                       background={"bg-red-500 hover:bg-red-600"}
                       icon={<ClearCartIcon className={"h-6 w-6 "} />}
                     />

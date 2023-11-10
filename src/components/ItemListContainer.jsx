@@ -3,18 +3,21 @@ import Card from "./Card";
 import Like from "./Like";
 import PropTypes from "prop-types";
 import { AddToCartIcon, RemoveFromCartIcon } from "./Icon";
-import { useProducts } from "../hooks/useProduct";
+import { useCart } from "../hooks/useCart";
 import useFavorites from "../hooks/useFavorite";
 import Filters from "./Filters";
+import { useFilters } from "../hooks/useFilters";
 
-const ItemListContainer = ({ favorites, filters }) => {
-  const { products, removeFromCart, addToCart } = useProducts();
+const ItemListContainer = ({ favorites }) => {
+  const { removeFromCart, addToCart } = useCart();
+
+  const { filteredProducts } = useFilters();
   const { likedProducts, toggleFavorite } = useFavorites();
 
   const renderButton = (product, isProductInCart) => (
     <Button
       onClick={() =>
-        isProductInCart ? removeFromCart(product) : addToCart(product)
+        isProductInCart ? removeFromCart(product.id) : addToCart(product)
       }
       background={isProductInCart ? "bg-red-500 hover:bg-red-600" : ""}
       text={isProductInCart ? "Remove from cart" : "Add to cart"}
@@ -40,7 +43,7 @@ const ItemListContainer = ({ favorites, filters }) => {
         <Card
           heightAndWidthImg={"h-96"}
           styles={"w-96 max-[400px]:w-72 flex-col"}
-          products={favorites || filters ? favorites || filters : products}
+          products={favorites ? favorites : filteredProducts}
           renderButton={renderButton}
           renderLike={renderLike}
         />
